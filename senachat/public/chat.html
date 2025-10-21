@@ -195,7 +195,7 @@
         
         let currentUserName = '';
 
-        const socket = io();
+        const socket = io(); // Conexão automática com o mesmo domínio
 
         function saveLogin(username) {
             localStorage.setItem('chatUserName', username); 
@@ -265,12 +265,14 @@
             e.preventDefault();
             const messageText = messageInput.value.trim();
             if (messageText) {
-                socket.emit('chat message', messageText); 
+                // envia mensagem com user e text
+                socket.emit('mensagem', { user: currentUserName, text: messageText });
                 messageInput.value = '';
             }
         });
         
-        socket.on('chat message', function(data) {
+        // escuta evento do servidor
+        socket.on('mensagem', function(data) {
             addMessage(data);
         });
 
